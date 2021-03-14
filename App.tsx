@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, View } from 'react-native';
+import { AppRegistry } from 'react-native';
 import Routes from './src/routes'
 
 class reactTutorialApp extends Component {
@@ -10,4 +10,4 @@ class reactTutorialApp extends Component {
    }
 }
 export default reactTutorialApp
-AppRegistry.registerComponent('reactTutorialApp', () => reactTutorialApp)
+//AppRegistry.registerComponent('reactTutorialApp', () => reactTutorialApp)
