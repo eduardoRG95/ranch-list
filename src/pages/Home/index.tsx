@@ -1,46 +1,62 @@
 import React from 'react'
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native"
-import Carousel from 'react-native-snap-carousel'
+import { View, StyleSheet, StatusBar, Text } from "react-native"
 import { Actions } from 'react-native-router-flux'
-import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from '../../components/CarouselCardItem'
-import data from '../../data/data'
 
-const CarouselCards = () => {
+
+import { Button , List, Provider as PaperProvider } from 'react-native-paper';
+
+// import Carousel from 'react-native-snap-carousel'
+// import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from '../../components/CarouselCardItem'
+// import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+// import data from '../../data/data'
+
+const Home = () => {
+
+const [expanded, setExpanded] = React.useState(true);
+const handlePress = () => setExpanded(!expanded);
+
   const isCarousel = React.useRef(null)
+
   const goToList = () => {
      Actions.list()
   }  
 
   return (
-    <View
-    style={{
-      flex: 1,
-      width: '100%',
-      height: '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 20,
-    }}>
+      <View style={styles.container}>
+      <PaperProvider >
+          <List.Section title="Minhas Listas">
+              <List.Accordion
+                  title="Uncontrolled Accordion"
+                  left={props => <List.Icon {...props} icon="folder" />}>
+                  <List.Item title="First item" />
+                  <List.Item title="Second item" />
+              </List.Accordion>
 
-      <Carousel
-        layout="tinder"
-        layoutCardOffset={9}
-        ref={isCarousel}
-        data={data}
-        renderItem={CarouselCardItem}
-        sliderWidth={SLIDER_WIDTH}
-        itemWidth={ITEM_WIDTH}
-        inactiveSlideShift={0}
-        useScrollView={true}
-      />
-       <TouchableOpacity style = {{ margin: 128 }} onPress = {goToList}>
-         <Text>List</Text>
-      </TouchableOpacity>
-    </View>
+              <List.Accordion
+                  title="Controlled Accordion"
+                  left={props => <List.Icon {...props} icon="folder" />}
+                  expanded={expanded}
+                  onPress={handlePress}>
+                  <List.Item title="First item" />
+                  <List.Item title="Second item" />
+              </List.Accordion>
+          </List.Section>
+
+          <Button  mode="contained" onPress={goToList}>
+              Crie Novas Listas
+            </Button>
+      </PaperProvider>
+
+   </View>
   )
 }
 const styles = StyleSheet.create({
-
+    container: {
+        flex: 1,
+        paddingLeft: 5,
+        paddingRight: 5,
+        marginTop: StatusBar.currentHeight || 0,
+    },
  });
 
-export default CarouselCards
+export default Home
