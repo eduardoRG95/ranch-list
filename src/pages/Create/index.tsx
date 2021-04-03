@@ -47,7 +47,6 @@ const App = () => {
                 <Button
                     title="Salvar"
                     onPress={() => Alert.alert('Simple Button pressed')} />
-
                 <List.Item
                     title="First Item"
                     description="Item description"
