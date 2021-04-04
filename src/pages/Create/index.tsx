@@ -1,23 +1,8 @@
 import React, { useState } from "react";
 
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, Button, Alert } from "react-native";
+import { SafeAreaView, StatusBar, ScrollView,  StyleSheet, Text, TouchableOpacity, Button, Alert } from "react-native";
 
 import { TextInput, List, Provider as PaperProvider } from 'react-native-paper';
-
-const DATA = [
-    {
-        id: "1",
-        title: "First Item",
-    },
-    {
-        id: "2",
-        title: "Second Item",
-    },
-    {
-        id: "3",
-        title: "Third Item",
-    },
-];
 
 const Item = ({ item, onPress, style }: any) => (
     <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
@@ -26,13 +11,45 @@ const Item = ({ item, onPress, style }: any) => (
 );
 
 const App = () => {
+    
+    const arrayItens = [
+        {
+            title: "First Item",
+        },
+        {
+            title: "Second Item",
+        },
+        {
+            title: "Third Item",
+        },
+    ];
 
-    const [selectedId, setSelectedId] = useState(null);
-    const [text, setText] = React.useState('');
+    const AddItemsToArray = () => {
+        
+        if(text != ''){
 
-    const [expanded, setExpanded] = React.useState(true);
+            const newObject = [{
+                title: text
+            }];
+            const arrayResponse = [...newObject, ...arrayItensList];
+            setArrayItensList(arrayResponse);
+            setText('')
+        }else {
+            alert("Por favor escreva o nome do item a ser adcionado na lista :D")
+        }
 
-    const handlePress = () => setExpanded(!expanded);
+    }
+
+    const ClearList = () => {
+        
+        setArrayItensList([]);
+       
+
+    }
+
+    const [arrayItensList, setArrayItensList] = React.useState(arrayItens);
+
+    const [text, setText]          = React.useState('');
 
     return (
         <SafeAreaView style={styles.container}>
@@ -41,28 +58,35 @@ const App = () => {
                 <TextInput
                     style={styles.inputItens}
                     label="Add Item"
+                    value={text}
                     onChangeText={text => setText(text)}
                 />
 
                 <Button
-                    title="Salvar"
-                    onPress={() => Alert.alert('Simple Button pressed')} />
-                <List.Item
-                    title="First Item"
-                    description="Item description"
-                    left={props => <List.Icon {...props} icon="folder" />}
-                />
-                <List.Item
-                    title="First Item"
-                    description="Item description"
-                    left={props => <List.Icon {...props} icon="folder" />}
-                />
-                <List.Item
-                    title="First Item"
-                    description="Item description"
-                    left={props => <List.Icon {...props} icon="folder" />}
-                />
+                    title="ADD"
+                    onPress={() => AddItemsToArray()} />
+
+                <ScrollView style={styles.container}>
+                    {
+                        arrayItensList.map((item) => (
+                            <List.Item
+                                key={item.title}
+                                title={item.title}
+                                left={props => <List.Icon {...props} icon="folder" />}
+                                onPress={() => {
+                                    Alert.alert("skin_color: " + item.title 
+                                    );
+                                }}                                
+                            />
+                        ))
+                    }
+                </ScrollView>
             </PaperProvider>
+        
+            <Button
+                title="limpa lista"
+                onPress={() => ClearList()} />
+                
         </SafeAreaView>
     );
 };
@@ -84,6 +108,13 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 16,
+    },
+    delete: {
+        marginTop: 3,
+        backgroundColor: '#ff0000'
+    },
+    salvar: {
+
     },
     inputItens: {
         marginBottom: 12,
