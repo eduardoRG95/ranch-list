@@ -66,6 +66,7 @@ const App = () => {
                     title="ADD"
                     onPress={() => AddItemsToArray()} />
 
+                <Item />
                 <ScrollView style={styles.container}>
                     {
                         arrayItensList.map((item) => (
