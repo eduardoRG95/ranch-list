@@ -8,7 +8,6 @@ import { Actions } from 'react-native-router-flux'
 
 
 import { Button , List, Provider as PaperProvider } from 'react-native-paper';
-import { redA700 } from 'react-native-paper/lib/typescript/styles/colors';
 
 // import Carousel from 'react-native-snap-carousel'
 // import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from '../../components/CarouselCardItem'
