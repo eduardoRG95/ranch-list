@@ -21,20 +21,25 @@ const App = () => {
 
 
     const GetItem = async () => {
-        // try {
-        //     const teste = await AsyncStorage.getItem('TESTE');
-        //     if (teste !== null) {
-        //         Alert.alert(String(teste));
-        //     }
-        // } catch (e) {
-        //     Alert.alert(e)
-        // }
+        try {
+            const teste = await AsyncStorage.getItem('list');
+            if (teste !== null) {
+                Alert.alert(String(teste));
+                console.log(teste)
+            }
+        } catch (e) {
+            Alert.alert(e)
+        }
     }
 
-    const SaveList = () => {
-
-
+    const SaveList = async () => {
+        try {
+            await AsyncStorage.setItem('list', JSON.stringify(list));
+        } catch (e) {
+            Alert.alert(e)
+        }
     }
+
 
 
     return (
@@ -49,18 +54,29 @@ const App = () => {
                 />
             </View>
 
-            <Button
-                title="+"
-                onPress={() => addToList()} />
+            <View style={styles.box}>
 
-            <Button
-                title="Salvar Lista"
-                onPress={() => SaveList()} />
+                <Button
+                    style={styles.button}
+                    title="+"
+                    onPress={() => addToList()} />
+
+                <Button
+                    style={styles.button}
+                    title="Salvar Lista"
+                    onPress={() => SaveList()} />
 
 
-            <FlatList data={list} showsVerticalScrollIndicator={false}
+                <Button
+                    style={styles.button}
+                    title="get"
+                    onPress={() => GetItem()} />
+
+            </View>
+
+            <FlatList data={list} style={styles.listItens} showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
-                    <Text>{item.text}</Text>
+                    <Text style={styles.textItens}>{item.text}</Text>
                 )} />
 
         </View>
@@ -72,8 +88,33 @@ const App = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: '100%',
         marginTop: 8,
+        paddingLeft: 5,
+        paddingRight: 5
     },
+    box: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginTop: 10,
+        marginRight: 5,
+        width: '100%'
+
+    },
+    listItens:{
+        marginTop: 20,
+    },
+    textItens:{
+        fontSize: 20,
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginBottom: 15
+    },
+    button: {
+        width: 500,
+        height: 100,
+    }
 });
 
 

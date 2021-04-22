@@ -42,7 +42,8 @@ const handlePress = () => setExpanded(!expanded);
 
     const GetItem = async () => {
         try {
-            const teste = await  AsyncStorage.getItem('TESTE');
+            const teste = await  AsyncStorage.getItem('list');
+            console.log(teste)
             if (teste !== null){
                 Alert.alert(String(teste));
             }
@@ -73,6 +74,9 @@ const handlePress = () => setExpanded(!expanded);
 
           <Button  mode="contained" onPress={goToList}>
               Crie Novas Listas
+            </Button>
+              <Button mode="contained" onPress={GetItem}>
+                  Crie Novas Listas
             </Button>
 
               {/* <Button mode="contained" onPress={saveItem}>
