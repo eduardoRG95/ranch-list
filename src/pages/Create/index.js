@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { AsyncStorage } from 'react-native';
 
-import { StatusBar, FlatList, StyleSheet, Text, TouchableOpacity, Button, View } from "react-native";
+import { StatusBar, FlatList, StyleSheet, Text, TouchableOpacity, Button, View, Alert } from "react-native";
 
 import { TextInput } from 'react-native-paper';
 
@@ -22,10 +22,11 @@ const App = () => {
 
     const GetItem = async () => {
         try {
+            console.log("teste")
             const teste = await AsyncStorage.getItem('list');
+            console.log(teste)
             if (teste !== null) {
                 Alert.alert(String(teste));
-                console.log(teste)
             }
         } catch (e) {
             Alert.alert(e)

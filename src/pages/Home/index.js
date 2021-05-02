@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Modal, Portal, Text, Button, List, Provider } from 'react-native-paper';
+import { Modal, Portal, Text, Button, List, Provider, TextInput } from 'react-native-paper';
 
 import {  StyleSheet, StatusBar, Alert   } from "react-native";
 
@@ -18,7 +18,6 @@ const Home = () => {
 
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
-    const containerStyle = { backgroundColor: 'white', padding: 20 };
 
     const [expanded, setExpanded] = React.useState(true);
     const handlePress = () => setExpanded(!expanded);
@@ -45,9 +44,9 @@ const Home = () => {
         }
     }
 
-    const GetItem = async () => {
+    const GetAllList = async () => {
         try {
-            const teste = await  AsyncStorage.getItem('list');
+            const teste = await AsyncStorage.getAllKeys();
             console.log(teste)
             if (teste !== null){
                 Alert.alert(String(teste));
@@ -74,13 +73,22 @@ const Home = () => {
                     />
                     </List.Section>  
                     <Portal>
-                        <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
-                            <Text>Example Modal.  Click outside this area to dismiss.</Text>
+                    <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.containerStyle}>
+                            <Text>Insira um nome na sua lista</Text>
+                            <TextInput
+                                label="Nome da lista"
+                            />
+                            <Button >
+                                Salvar Lista
+                            </Button>
                         </Modal>
                     </Portal>
                     <Button style={{ marginTop: 30 }} onPress={showModal}>
                         Criar nova lista
-                        </Button>
+                    </Button>
+                    {/* <Button style={{ marginTop: 30 }} onPress={GetItem}>
+                        pega a lista
+                     </Button> */}
                 </Provider>
             )
 }
@@ -91,6 +99,12 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
         paddingRight: 5,
         marginTop: StatusBar.currentHeight || 0,
+    },
+    containerStyle: {
+        backgroundColor: '#fff',
+        padding: 20,
+        marginLeft: 10,
+        marginRight: 10,
     },
     iconList: {
         backgroundColor: '#dfdac8',
