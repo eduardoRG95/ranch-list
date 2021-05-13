@@ -4,7 +4,8 @@ import { AsyncStorage } from 'react-native';
 
 import { StatusBar, FlatList, StyleSheet, Text, TouchableOpacity, Button, View, Alert } from "react-native";
 
-import { TextInput } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/Ionicons';
+
 
 const App = () => {
 
@@ -47,12 +48,12 @@ const App = () => {
         <View style={styles.container}>
 
             <View>
-                <TextInput
+                {/* <TextInput
                     style={styles.inputItens}
                     label="Add Item"
                     value={text}
                     onChangeText={text => setText(text)}
-                />
+                /> */}
             </View>
 
             <View style={styles.box}>
