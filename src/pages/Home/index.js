@@ -1,26 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { FlatList, StatusBar, StyleSheet, Text, View } from "react-native";
+
+import { 
+    FlatList, 
+    StatusBar, 
+    StyleSheet, 
+    Text, 
+    View,
+    Modal, 
+    Pressable, 
+    Alert, 
+    TextInput 
+} from "react-native";
+
 import { AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/Ionicons';
 
-
-
-// import Carousel from 'react-native-snap-carousel'
-// import CarouselCardItem, { SLIDER_WIDTH, ITEM_WIDTH } from '../../components/CarouselCardItem'
-// import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-// import data from '../../data/data'
-
 const Home = () => {
-
-    const [visible, setVisible] = React.useState(false);
-    const [selectedId, setSelectedId] = useState(null);
-    const showModal = () => setVisible(true);
-    const hideModal = () => setVisible(false);
-    const [expanded, setExpanded] = React.useState(true);
-    const handlePress = () => setExpanded(!expanded);
-    const isCarousel = React.useRef(null)
-
+    const [modalVisible, setModalVisible] = useState(false);
+    const [text, setText] = useState('');
 
     const DATA = [
         {
@@ -60,9 +58,6 @@ const Home = () => {
             Alert.alert(e)
         }
    } 
-
-
-
     return (
         <View style={styles.container}>
             <FlatList data={DATA} showsVerticalScrollIndicator={false}
@@ -73,38 +68,76 @@ const Home = () => {
                         </Text>
                         <Text style={styles.listItensText} >{item.title}</Text>
                         <Text style={styles.listItensIcon} >
-                            <Icon style={styles.icons} name="create-outline" color="#4F8EF7" />
+                            <Icon style={styles.icons} onPress={goToList} name="create-outline" color="#4F8EF7" />
                         </Text>
                     </View>
                 )} />
-{/* 
-                    <Portal>
-                        <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.containerStyle}>
-                            <Text>Insira um nome na sua lista</Text>
-                            <TextInput
-                                label="Nome da lista"
-                            />
-                            <Button >
-                                Salvar Lista
-                            </Button>
-                        </Modal>
-                    </Portal> */}
+
+                <View style={styles.centeredView}>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            Alert.alert("Modal has been closed.");
+                            setModalVisible(!modalVisible);
+                        }}
+                    >
+                        <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+                                <Text style={styles.modalText}>Hello World!</Text>
+                                <TextInput
+                                    style={{ height: 40 }}
+                                    placeholder="Type here to translate!"
+                                    onChangeText={text => setText(text)}
+                                    defaultValue={text}
+                                />
+                                <Pressable
+                                    style={[styles.button, styles.buttonClose]}
+                                    onPress={() => setModalVisible(!modalVisible)}
+                                >
+                                    <Text style={styles.textStyle}>Voltar</Text>
+                                </Pressable>
+                            </View>
+                        </View>
+                    </Modal>
+                    <Pressable
+                        style={[styles.button, styles.buttonOpen]}
+                        onPress={() => setModalVisible(true)}
+                    >
+                        <Text style={styles.textStyle}>Nova Lista</Text>
+                    </Pressable>
+                </View>
+
                     {/* <Button style={{ marginTop: 30 }} onPress={showModal}>
                         Criar nova lista
                     </Button> */}
                     {/* <Button style={{ marginTop: 30 }} onPress={GetItem}>
                         pega a lista
-                     </Button> */}
-  
+                    </Button> */}
+
+                <View style={styles.menuBottom}>
+                    <Text style={styles.contentIcons}>
+                        <Text style={styles.iconsBottom}>
+                            <Icon style={styles.IconsFooter} name="home-outline" color="#4F8EF7" />
+                        </Text>
+                        <Text style={styles.iconsBottom}>
+                            <Icon style={styles.IconsFooter} name="add-circle-outline" color="#4F8EF7" />
+                        </Text>
+                        <Text style={styles.iconsBottom}>
+                            <Icon style={styles.IconsFooter} name="create-outline" color="#4F8EF7" />
+                        </Text>
+                    </Text>
+                </View>
+      
             </View>
             )
 }
 
 const styles = StyleSheet.create({
     container: {
+        width: "100%",
         flex: 1,
-        paddingLeft: 10,
-        paddingRight: 10,
         marginTop: StatusBar.currentHeight || 0,
     },
     listItens: {
@@ -131,6 +164,72 @@ const styles = StyleSheet.create({
     },
     iconsFavorite: {
         color: "#d0d0d0"
+    },
+    menuBottom: {
+        backgroundColor: "#eae6e6",
+        position: "absolute",
+        bottom: 0,
+        height: "10%",
+        width: "100%",
+        flex: 1,
+    },
+
+    contentIcons: {
+        backgroundColor: "red",
+        display: "flex",
+        flexDirection: "row",
+        paddingLeft: 10,
+        paddingRight: 10
+    },
+    iconsBottom: {
+        flex: 4,
+        justifyContent: "space-between"
+    },
+    IconsFooter: {
+        fontSize: 28
+    },
+
+    //modal
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    button: {
+        borderRadius: 10,
+        padding: 10,
+        elevation: 2
+    },
+    buttonOpen: {
+        backgroundColor: "#00a524",
+    },
+    buttonClose: {
+        backgroundColor: "#2196F3",
+    },
+    textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center"
     }
  });
 
