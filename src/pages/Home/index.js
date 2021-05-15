@@ -95,11 +95,7 @@ const Home = () => {
                     {/* <Button style={{ marginTop: 30 }} onPress={GetItem}>
                         pega a lista
                      </Button> */}
-            <Stack.Navigator>
-                <Stack.Screen name="Home" component={Home} />
-                <Stack.Screen name="Profile" component={Profile} />
-                <Stack.Screen name="Settings" component={Settings} />
-            </Stack.Navigator>
+  
             </View>
             )
 }
