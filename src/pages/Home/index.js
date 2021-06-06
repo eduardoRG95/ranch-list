@@ -60,6 +60,7 @@ const Home = () => {
    } 
     return (
         <View style={styles.container}>
+            
             <FlatList data={DATA} showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
                     <View style={styles.listItens} >
@@ -165,6 +166,10 @@ const styles = StyleSheet.create({
     iconsFavorite: {
         color: "#d0d0d0"
     },
+    tinyLogo: {
+        width: 50,
+        height: 50,
+    },
     menuBottom: {
         backgroundColor: "#eae6e6",
         position: "absolute",
@@ -174,16 +179,15 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 
+    //icons footter
     contentIcons: {
-        backgroundColor: "red",
         display: "flex",
-        flexDirection: "row",
+        backgroundColor: "#dedede",
+        justifyContent: "space-evenly",
         paddingLeft: 10,
         paddingRight: 10
     },
     iconsBottom: {
-        flex: 4,
-        justifyContent: "space-between"
     },
     IconsFooter: {
         fontSize: 28
@@ -223,7 +227,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#2196F3",
     },
     textStyle: {
-        color: "white",
+        color: "#fff",
         fontWeight: "bold",
         textAlign: "center"
     },

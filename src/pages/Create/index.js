@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 
-import { AsyncStorage } from 'react-native';
-
-import { StatusBar, FlatList, StyleSheet, Text, TouchableOpacity, Button, View, Alert } from "react-native";
+import { AsyncStorage, FlatList, StyleSheet, Text, TouchableOpacity, Button, View, Alert, TextInput, SafeAreaView} from "react-native";
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
 const App = () => {
 
-    const [text, setText] = React.useState('');
     const [list, setList] = useState([]);
+
+    const [text, onChangeText] = React.useState("");
+    const [number, onChangeNumber] = React.useState(null);
 
     let key = list.length;
 
@@ -42,38 +42,29 @@ const App = () => {
         }
     }
 
-
-
     return (
         <View style={styles.container}>
-
-            <View>
-                {/* <TextInput
-                    style={styles.inputItens}
-                    label="Add Item"
+            <SafeAreaView style={styles.contentViewInput}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Produto"
+                    onChangeText={onChangeText}
                     value={text}
-                    onChangeText={text => setText(text)}
-                /> */}
-            </View>
-
+                />
+            </SafeAreaView>
             <View style={styles.box}>
-
-                <Button
-                    style={styles.button}
-                    title="+"
-                    onPress={() => addToList()} />
-
-                <Button
-                    style={styles.button}
-                    title="Salvar Lista"
-                    onPress={() => SaveList()} />
-
-
-                <Button
-                    style={styles.button}
-                    title="get"
-                    onPress={() => GetItem()} />
-
+                <View style={styles.contentView}>
+                    <Button
+                        style={styles.button}
+                        title="+"
+                        onPress={() => addToList()} />
+                </View>
+                <View style={styles.contentView}>
+                    <Button
+                        style={styles.button}
+                        title="Salvar Lista"
+                        onPress={() => SaveList()} />
+                </View>
             </View>
 
             <FlatList data={list} style={styles.listItens} showsVerticalScrollIndicator={false}
@@ -90,18 +81,15 @@ const App = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: '100%',
         marginTop: 8,
         paddingLeft: 5,
-        paddingRight: 5
+        paddingRight: 20
     },
     box: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginTop: 10,
-        marginRight: 5,
-        width: '100%'
+        marginTop: 10
 
     },
     listItens:{
@@ -116,6 +104,17 @@ const styles = StyleSheet.create({
     button: {
         width: 500,
         height: 100,
+    },
+    contentView: {
+        width: 150
+    },
+     input: {
+        height: 40,
+        margin: 12,
+        borderBottomWidth: 1,
+    },
+    contentViewInput: {
+        width: "100%",
     }
 });
 
