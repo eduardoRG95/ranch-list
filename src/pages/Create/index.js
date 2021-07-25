@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const App = () => {
 
-    const [list, setList] = useState([]);
+    const [list, setList] = useState({});
 
     const [text, onChangeText] = React.useState("");
     const [number, onChangeNumber] = React.useState(null);
@@ -23,12 +23,9 @@ const App = () => {
 
     const GetItem = async () => {
         try {
-            console.log("teste")
-            const teste = await AsyncStorage.getItem('list');
-            console.log(teste)
-            if (teste !== null) {
-                Alert.alert(String(teste));
-            }
+           const listCurrent = await AsyncStorage.getItem('LIST_CURRENT');
+           setList(listCurrent); 
+          console.log(listCurrent)
         } catch (e) {
             Alert.alert(e)
         }
@@ -41,6 +38,9 @@ const App = () => {
             Alert.alert(e)
         }
     }
+  useEffect(() => {
+    GetItem();
+  });
 
     return (
         <View style={styles.container}>
@@ -67,10 +67,10 @@ const App = () => {
                 </View>
             </View>
 
-            <FlatList data={list} style={styles.listItens} showsVerticalScrollIndicator={false}
+            {/* <FlatList data={list} style={styles.listItens} showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
                     <Text style={styles.textItens}>{item.text}</Text>
-                )} />
+                )} /> */}
 
         </View>
 
