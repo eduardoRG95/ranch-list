@@ -14,36 +14,42 @@ const App = () => {
 
     let key = list.length;
 
-    function addToList() {
+    const addToList = () => {
         var keyAux = ++key;
         list.push({ text: text.toString(), key: keyAux.toString() });
         setList([...list]);
     }
 
-
-    const GetItem = async () => {
-        try {
-           const listCurrent = await AsyncStorage.getItem('LIST_CURRENT');
-           setList(listCurrent); 
-          console.log(listCurrent)
-        } catch (e) {
-            Alert.alert(e)
-        }
+    const makeListEdition = async (listas: any) => {
+      let parsed = JSON.parse(listas.toString());
+      console.log(parsed)
+      await setList(parsed);
+      console.log(list);
     }
 
-    const SaveList = async () => {
-        try {
-            await AsyncStorage.setItem('list', JSON.stringify(list));
-        } catch (e) {
-            Alert.alert(e)
-        }
+    const GetItemList = async () => {
+      try {
+        const listCurrent = await AsyncStorage.getItem('LIST_CURRENT');
+        AsyncStorage.removeItem('LIST_CURRENT');
+        makeListEdition(listCurrent);
+      } catch (e) {
+        Alert.alert(e)
+      }
     }
+
+    // const SaveList = async () => {
+    //     try {
+    //         await AsyncStorage.setItem('list', JSON.stringify(list));
+    //     } catch (e) {
+    //         Alert.alert(e)
+    //     }
+    // }
   useEffect(() => {
-    GetItem();
+    GetItemList();
   });
 
     return (
-        <View style={styles.container}>
+      (list && <View style={styles.container}>
             <SafeAreaView style={styles.contentViewInput}>
                 <TextInput
                     style={styles.input}
@@ -66,15 +72,12 @@ const App = () => {
                         onPress={() => SaveList()} />
                 </View>
             </View>
+            {list && (<FlatList data={list} style={styles.listItens} showsVerticalScrollIndicator={false}
+                renderItem={({ itens }) => (
+                  <Text style={styles.textItens}>{itens.NomeProduto}</Text>
+                )} /> )}
 
-            {/* <FlatList data={list} style={styles.listItens} showsVerticalScrollIndicator={false}
-                renderItem={({ item }) => (
-                    <Text style={styles.textItens}>{item.text}</Text>
-                )} /> */}
-
-        </View>
-
-
+        </View>)
     );
 };
 

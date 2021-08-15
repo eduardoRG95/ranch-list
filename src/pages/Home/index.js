@@ -97,10 +97,6 @@ const Home = () => {
   const GetAllList = async () => {
     try {
       const teste = await AsyncStorage.getItem('LIST');
-      //console.log(teste)
-      if (teste !== null) {
-        Alert.alert(String(teste));
-      }
     } catch (e) {
       Alert.alert(e)
     }
