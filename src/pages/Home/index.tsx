@@ -15,16 +15,19 @@ import {
 import { AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux'
 import Icon from 'react-native-vector-icons/Ionicons';
+import { Produto } from "../../models/Produto.model";
+import { Type } from "../../models/Type.model";
 
 const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [list, setList] = useState<Type[]>([]);
   const [text, setText] = useState('');
 
   const DATA = [
     {
-      id: '1',
+      id: 1,
       title: 'Mercado',
-      itens: [
+      produtos: [
         {
           NomeProduto: 'Milho',
           Quantidade: 1,
@@ -36,11 +39,11 @@ const Home = () => {
           unidade: ''
         },
       ]
-    },
+    } ,
     {
-      id: '2',
+      id: 2,
       title: 'Padaria',
-      itens: [
+      produtos: [
         {
           NomeProduto: 'Pães',
           Quantidade: 6,
@@ -54,9 +57,9 @@ const Home = () => {
       ]
     },
     {
-      id: '3',
+      id: 3,
       title: 'Farmácia',
-      itens: [
+      produtos: [
         {
           NomeProduto: 'Paracetamol',
           Quantidade: 1,
@@ -71,7 +74,7 @@ const Home = () => {
     },
   ];
 
-  const goToList = (item) => {
+  const goToList = (item: any) => {
     saveItem(item);
 
   }
@@ -84,7 +87,7 @@ const Home = () => {
     }
   }
 
-  const saveItem = async (ListEdit) => {
+  const saveItem = async (ListEdit: any) => {
     try {
       await AsyncStorage.setItem('LIST_CURRENT', JSON.stringify(ListEdit))
       Actions.list();
@@ -102,25 +105,40 @@ const Home = () => {
     }
   }
 
+  const makeListIniciate = async (data: any) => {
+    let listFormated: Type[] = [];
+    let Listprod: Produto[];
+    let prod: Produto;
+    let lista: Type;
+    data.forEach((element: any) => {
+      console.log("teste 1", element);
+
+      element.itens.forEach((x: any) => {
+        prod = {
+          NomeProduct: x.NomeProduto,
+          Quantidade: x.Quantidade,
+          Unidade: x.unidade
+        };
+        Listprod.push(prod);
+      });
+      console.log("teste 2", Listprod);
+      lista = {
+        id: Number(element.id),
+        title: element.title.toString(),
+        produtos: Listprod,
+      }
+      listFormated.push(lista);
+    });
+    setList(listFormated);
+  }
+
   useEffect(() => {
+    makeListIniciate(DATA);
     saveItens();
     GetAllList();
   });
   return (
     <View style={styles.container}>
-
-      <FlatList data={DATA} showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <View style={styles.listItens} >
-            <Text style={styles.listItensIcon} >
-              <Icon style={[styles.icons, styles.iconsFavorite]} name="ios-star" color="#4F8EF7" />
-            </Text>
-            <Text style={styles.listItensText} >{item.title}</Text>
-            <Text style={styles.listItensIcon} >
-              <Icon style={styles.icons} onPress={() => goToList(item)} name="create-outline" color="#4F8EF7" />
-            </Text>
-          </View>
-        )} />
 
       <View style={styles.centeredView}>
         <Modal
@@ -150,12 +168,12 @@ const Home = () => {
             </View>
           </View>
         </Modal>
-        <Pressable
+        {/* <Pressable
           style={[styles.button, styles.buttonOpen]}
           onPress={() => setModalVisible(true)}
         >
           <Text style={styles.textStyle}>Nova Lista</Text>
-        </Pressable>
+        </Pressable> */}
       </View>
 
       {/* <Button style={{ marginTop: 30 }} onPress={showModal}>
@@ -165,19 +183,6 @@ const Home = () => {
                         pega a lista
                     </Button> */}
 
-      <View style={styles.menuBottom}>
-        <Text style={styles.contentIcons}>
-          <Text style={styles.iconsBottom}>
-            <Icon style={styles.IconsFooter} name="home-outline" color="#4F8EF7" />
-          </Text>
-          <Text style={styles.iconsBottom}>
-            <Icon style={styles.IconsFooter} name="add-circle-outline" color="#4F8EF7" />
-          </Text>
-          <Text style={styles.iconsBottom}>
-            <Icon style={styles.IconsFooter} name="create-outline" color="#4F8EF7" />
-          </Text>
-        </Text>
-      </View>
 
     </View>
   )

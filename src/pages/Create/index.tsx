@@ -4,12 +4,63 @@ import { AsyncStorage, FlatList, StyleSheet, Text, TouchableOpacity, Button, Vie
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
-
 const App = () => {
 
-    const [list, setList] = useState({});
+  const DATA = [
+    {
+      id: '1',
+      title: 'Mercado',
+      itens: [
+        {
+          NomeProduto: 'Milho',
+          Quantidade: 1,
+          unidade: ''
+        },
+        {
+          NomeProduto: 'Ervilha',
+          Quantidade: 2,
+          unidade: ''
+        },
+      ]
+    },
+    {
+      id: '2',
+      title: 'Padaria',
+      itens: [
+        {
+          NomeProduto: 'Pães',
+          Quantidade: 6,
+          unidade: ''
+        },
+        {
+          NomeProduto: 'Sonho',
+          Quantidade: 2,
+          unidade: ''
+        },
+      ]
+    },
+    {
+      id: '3',
+      title: 'Farmácia',
+      itens: [
+        {
+          NomeProduto: 'Paracetamol',
+          Quantidade: 1,
+          unidade: 'cx'
+        },
+        {
+          NomeProduto: 'Eno',
+          Quantidade: 1,
+          unidade: 'Sachê'
+        },
+      ]
+    },
+  ];
 
+
+    const [list, setList] = React.useState([]);
     const [text, onChangeText] = React.useState("");
+    const [textTitle, setTextTitle] = React.useState("");
     const [number, onChangeNumber] = React.useState(null);
 
     let key = list.length;
@@ -20,44 +71,61 @@ const App = () => {
         setList([...list]);
     }
 
-    const makeListEdition = async (listas: any) => {
-      let parsed = JSON.parse(listas.toString());
-      console.log(parsed)
-      await setList(parsed);
-      console.log(list);
+    const makeListEdition = async (listas) => {
+      console.log(JSON.parse(listas.toString()));
+      await setList(JSON.parse(listas.toString()));
+      console.log(JSON.parse(listas.toString()));
     }
 
     const GetItemList = async () => {
       try {
         const listCurrent = await AsyncStorage.getItem('LIST_CURRENT');
-        AsyncStorage.removeItem('LIST_CURRENT');
-        makeListEdition(listCurrent);
+        let resp = JSON.parse(listCurrent);
+        console.log(resp)
+        setTextTitle(resp.title)
+        setList([...resp.itens]);
+       // AsyncStorage.removeItem('LIST_CURRENT');
+        // makeListEdition(listCurrent);
       } catch (e) {
         Alert.alert(e)
       }
     }
-
-    // const SaveList = async () => {
-    //     try {
-    //         await AsyncStorage.setItem('list', JSON.stringify(list));
-    //     } catch (e) {
-    //         Alert.alert(e)
-    //     }
-    // }
   useEffect(() => {
     GetItemList();
   });
 
     return (
       (list && <View style={styles.container}>
+
+        <FlatList data={DATA} showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <View style={styles.listItens} >
+              <Text style={styles.listItensIcon} >
+                <Icon style={[styles.icons, styles.iconsFavorite]} name="ios-star" color="#4F8EF7" />
+              </Text>
+              <Text style={styles.listItensText} >{item.title}</Text>
+              <Text style={styles.listItensIcon} >
+                <Icon style={styles.icons} onPress={() => goToList(item)} name="create-outline" color="#4F8EF7" />
+              </Text>
+            </View>
+          )} />
             <SafeAreaView style={styles.contentViewInput}>
-                <TextInput
+               <TextInput
                     style={styles.input}
                     placeholder="Produto"
                     onChangeText={onChangeText}
-                    value={text}
+                    value={textTitle}
                 />
             </SafeAreaView>
+            <SafeAreaView style={styles.contentViewInput}>
+              <TextInput
+                style={styles.input}
+                placeholder="Produto"
+                onChangeText={onChangeText}
+                value={textTitle}
+              />
+            </SafeAreaView>
+
             <View style={styles.box}>
                 <View style={styles.contentView}>
                     <Button
@@ -72,7 +140,7 @@ const App = () => {
                         onPress={() => SaveList()} />
                 </View>
             </View>
-            {list && (<FlatList data={list} style={styles.listItens} showsVerticalScrollIndicator={false}
+        {list && (<FlatList data={list} style={styles.listItens} showsVerticalScrollIndicator={false}
                 renderItem={({ itens }) => (
                   <Text style={styles.textItens}>{itens.NomeProduto}</Text>
                 )} /> )}
