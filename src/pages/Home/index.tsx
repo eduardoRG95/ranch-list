@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 
 import {
-  FlatList,
+  FlatList, 
+  SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
   View,
-  Item,
   Modal,
   Pressable,
   Alert,
@@ -95,9 +95,6 @@ const Home = () => {
       Alert.alert(e)
     }
   }
-  const renderItem = (shops: Type) => (
-    <Item title={shops.title} />
-  );
 
   useEffect(() => {
     setList([shops1, shops2, shops3])
@@ -105,11 +102,19 @@ const Home = () => {
   return (
     <View style={styles.container}>
       {list && (
-        <FlatList
-          data={list}
-          renderItem={renderItem}
-          keyExtractor={Item => Item.id}
-        />
+        <SafeAreaView>
+          <FlatList
+            data={list}
+            keyExtractor={list => list.id}
+            renderItem={({ item }) => {
+              return (
+                <View>
+                  <Text>{item.title}</Text>
+                </View>
+              );
+            }}
+          />
+        </SafeAreaView>
       )}
       <View style={styles.centeredView}>
         <Modal
