@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Item,
   Modal,
   Pressable,
   Alert,
@@ -22,70 +23,60 @@ const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [list, setList] = useState<Type[]>([]);
   const [text, setText] = useState('');
+  
+  const prd1: Produto[] = {
+    name: 'Milho',
+    Quantidade: 1,
+    unidade: ''
+  };
 
-  const DATA = [
-    {
-      id: 1,
-      title: 'Mercado',
-      produtos: [
-        {
-          NomeProduto: 'Milho',
-          Quantidade: 1,
-          unidade: ''
-        },
-        {
-          NomeProduto: 'Ervilha',
-          Quantidade: 2,
-          unidade: ''
-        },
-      ]
-    } ,
-    {
-      id: 2,
-      title: 'Padaria',
-      produtos: [
-        {
-          NomeProduto: 'Pães',
-          Quantidade: 6,
-          unidade: ''
-        },
-        {
-          NomeProduto: 'Sonho',
-          Quantidade: 2,
-          unidade: ''
-        },
-      ]
-    },
-    {
-      id: 3,
-      title: 'Farmácia',
-      produtos: [
-        {
-          NomeProduto: 'Paracetamol',
-          Quantidade: 1,
-          unidade: 'cx'
-        },
-        {
-          NomeProduto: 'Eno',
-          Quantidade: 1,
-          unidade: 'Sachê'
-        },
-      ]
-    },
-  ];
+  const prd2: Produto[] = {
+    name: "Pães",
+    Quantidade: 6,
+    unidade: ''
+  };
+
+  const prd3: Produto[] = {
+    name: 'Paracetamol',
+    Quantidade: 1,
+    unidade: 'cx'
+  };
+
+  const shops1: Type = {
+    id: 1,
+    title: 'Mercado',
+    periodicity: 'm',
+    products: prd1
+  };
+  const shops2: Type = {
+    id: 2,
+    title: 'Padaria',
+    periodicity: 'semanal',
+    products: prd2
+  };
+
+  const shops3: Type = {
+    id: 3,
+    title: 'Farmácia',
+    periodicity: 'semanal',
+    products: prd3
+  };
+
+
+
 
   const goToList = (item: any) => {
     saveItem(item);
 
   }
 
-  const saveItens = async () => {
-    try {
-      await AsyncStorage.setItem('LIST', JSON.stringify(DATA))
-    } catch (e) {
-      Alert.alert(e)
-    }
-  }
+  // const saveItens = async () => {
+  //   try {
+  //     await AsyncStorage.setItem('LIST', JSON.stringify(DATA))
+  //   } catch (e) {
+  //     Alert.alert(e)
+  //   }
+  // }
 
   const saveItem = async (ListEdit: any) => {
     try {
@@ -104,42 +95,22 @@ const Home = () => {
       Alert.alert(e)
     }
   }
-
-  const makeListIniciate = async (data: any) => {
-    let listFormated: Type[] = [];
-    let Listprod: Produto[];
-    let prod: Produto;
-    let lista: Type;
-    data.forEach((element: any) => {
-      console.log("teste 1", element);
-
-      element.itens.forEach((x: any) => {
-        prod = {
-          NomeProduct: x.NomeProduto,
-          Quantidade: x.Quantidade,
-          Unidade: x.unidade
-        };
-        Listprod.push(prod);
-      });
-      console.log("teste 2", Listprod);
-      lista = {
-        id: Number(element.id),
-        title: element.title.toString(),
-        produtos: Listprod,
-      }
-      listFormated.push(lista);
-    });
-    setList(listFormated);
-  }
+  const renderItem = (shops: Type) => (
+    <Item title={shops.title} />
+  );
 
   useEffect(() => {
-    makeListIniciate(DATA);
-    saveItens();
-    GetAllList();
+    setList([shops1, shops2, shops3])
   });
   return (
     <View style={styles.container}>
-
+      {list && (
+        <FlatList
+          data={list}
+          renderItem={renderItem}
+          keyExtractor={Item => Item.id}
+        />
+      )}
       <View style={styles.centeredView}>
         <Modal
           animationType="slide"

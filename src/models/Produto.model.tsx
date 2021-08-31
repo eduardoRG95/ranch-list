@@ -1,14 +1,14 @@
 export class Produto {
-  NomeProduct: string;
+  name: string;
   Quantidade: Number;
   Unidade: string;
   
   constructor(
-    NomeProduct: string,
+    name: string,
     Quantidade: Number,
     Unidade: string
   ) {
-    this.NomeProduct = NomeProduct;
+    this.name = name;
     this.Quantidade = Quantidade;
     this.Unidade = Unidade;
   }

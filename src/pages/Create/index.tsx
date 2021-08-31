@@ -6,58 +6,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const App = () => {
 
-  const DATA = [
-    {
-      id: '1',
-      title: 'Mercado',
-      itens: [
-        {
-          NomeProduto: 'Milho',
-          Quantidade: 1,
-          unidade: ''
-        },
-        {
-          NomeProduto: 'Ervilha',
-          Quantidade: 2,
-          unidade: ''
-        },
-      ]
-    },
-    {
-      id: '2',
-      title: 'Padaria',
-      itens: [
-        {
-          NomeProduto: 'Pães',
-          Quantidade: 6,
-          unidade: ''
-        },
-        {
-          NomeProduto: 'Sonho',
-          Quantidade: 2,
-          unidade: ''
-        },
-      ]
-    },
-    {
-      id: '3',
-      title: 'Farmácia',
-      itens: [
-        {
-          NomeProduto: 'Paracetamol',
-          Quantidade: 1,
-          unidade: 'cx'
-        },
-        {
-          NomeProduto: 'Eno',
-          Quantidade: 1,
-          unidade: 'Sachê'
-        },
-      ]
-    },
-  ];
-
-
     const [list, setList] = React.useState([]);
     const [text, onChangeText] = React.useState("");
     const [textTitle, setTextTitle] = React.useState("");
@@ -65,33 +13,33 @@ const App = () => {
 
     let key = list.length;
 
-    const addToList = () => {
-        var keyAux = ++key;
-        list.push({ text: text.toString(), key: keyAux.toString() });
-        setList([...list]);
-    }
+    // const addToList = () => {
+    //     var keyAux = ++key;
+    //     list.push({ text: text.toString(), key: keyAux.toString() });
+    //     setList([...list]);
+    // }
 
-    const makeListEdition = async (listas) => {
-      console.log(JSON.parse(listas.toString()));
-      await setList(JSON.parse(listas.toString()));
-      console.log(JSON.parse(listas.toString()));
-    }
+    // const makeListEdition = async (listas) => {
+    //   console.log(JSON.parse(listas.toString()));
+    //   await setList(JSON.parse(listas.toString()));
+    //   console.log(JSON.parse(listas.toString()));
+    // }
 
-    const GetItemList = async () => {
-      try {
-        const listCurrent = await AsyncStorage.getItem('LIST_CURRENT');
-        let resp = JSON.parse(listCurrent);
-        console.log(resp)
-        setTextTitle(resp.title)
-        setList([...resp.itens]);
-       // AsyncStorage.removeItem('LIST_CURRENT');
-        // makeListEdition(listCurrent);
-      } catch (e) {
-        Alert.alert(e)
-      }
-    }
+    // const GetItemList = async () => {
+    //   try {
+    //     const listCurrent = await AsyncStorage.getItem('LIST_CURRENT');
+    //     let resp = JSON.parse(listCurrent);
+    //     console.log(resp)
+    //     setTextTitle(resp.title)
+    //     setList([...resp.itens]);
+    //    // AsyncStorage.removeItem('LIST_CURRENT');
+    //     // makeListEdition(listCurrent);
+    //   } catch (e) {
+    //     Alert.alert(e)
+    //   }
+    // }
   useEffect(() => {
-    GetItemList();
+    // GetItemList();
   });
 
     return (
