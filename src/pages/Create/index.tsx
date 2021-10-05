@@ -2,16 +2,15 @@ import React, { useState, useEffect } from "react";
 
 import { AsyncStorage, FlatList, StyleSheet, Text, TouchableOpacity, Button, View, Alert, TextInput, SafeAreaView} from "react-native";
 
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Product } from "../../models/Produto.model";
+import { Type } from "../../models/Type.model";
 
 const App = () => {
 
-    const [list, setList] = React.useState([]);
-    const [text, onChangeText] = React.useState("");
+    const [listProduct, setListProduct] = React.useState<Product[]>([]);
+    const [listItens, setListItens] = React.useState<Type[]>([]);
     const [textTitle, setTextTitle] = React.useState("");
-    const [number, onChangeNumber] = React.useState(null);
 
-    let key = list.length;
 
     // const addToList = () => {
     //     var keyAux = ++key;
@@ -25,39 +24,49 @@ const App = () => {
     //   console.log(JSON.parse(listas.toString()));
     // }
 
-    // const GetItemList = async () => {
-    //   try {
-    //     const listCurrent = await AsyncStorage.getItem('LIST_CURRENT');
-    //     let resp = JSON.parse(listCurrent);
-    //     console.log(resp)
-    //     setTextTitle(resp.title)
-    //     setList([...resp.itens]);
-    //    // AsyncStorage.removeItem('LIST_CURRENT');
-    //     // makeListEdition(listCurrent);
-    //   } catch (e) {
-    //     Alert.alert(e)
-    //   }
-    // }
+    const GetItemList = async () => {
+      try {
+        const listCurrent = await AsyncStorage.getItem('LIST_CURRENT');
+        await AsyncStorage.removeItem('LIST_CURRENT');
+        await AsyncStorage.clear();
+        if(listCurrent != null) {
+          let resp = JSON.parse(listCurrent);
+          console.log(resp)
+          setListProduct(resp.products)
+          setTextTitle(resp.title);
+        }
+        
+        
+      //   AsyncStorage.removeItem('LIST_CURRENT');
+      //   makeListEdition(listCurrent);
+      } catch (e) {
+        Alert.alert("Erro ao Buscar Lista")
+      }
+    }
   useEffect(() => {
-    // GetItemList();
+    GetItemList();
   });
 
     return (
-      (list && <View style={styles.container}>
 
-        <FlatList data={DATA} showsVerticalScrollIndicator={false}
+      <View>
+        <Text>
+        { textTitle && ( textTitle )}
+        </Text>
+
+      { listProduct && (
+        <FlatList data={listProduct} showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <View style={styles.listItens} >
-              <Text style={styles.listItensIcon} >
-                <Icon style={[styles.icons, styles.iconsFavorite]} name="ios-star" color="#4F8EF7" />
-              </Text>
-              <Text style={styles.listItensText} >{item.title}</Text>
-              <Text style={styles.listItensIcon} >
-                <Icon style={styles.icons} onPress={() => goToList(item)} name="create-outline" color="#4F8EF7" />
-              </Text>
+      
+              <Text >{item.Title}</Text>
+     
             </View>
           )} />
-            <SafeAreaView style={styles.contentViewInput}>
+      )}
+
+          
+            {/* <SafeAreaView style={styles.contentViewInput}>
                <TextInput
                     style={styles.input}
                     placeholder="Produto"
@@ -74,8 +83,8 @@ const App = () => {
               />
             </SafeAreaView>
 
-            <View style={styles.box}>
-                <View style={styles.contentView}>
+            <View style={styles.box}> */}
+                {/* <View style={styles.contentView}>
                     <Button
                         style={styles.button}
                         title="+"
@@ -87,14 +96,11 @@ const App = () => {
                         title="Salvar Lista"
                         onPress={() => SaveList()} />
                 </View>
-            </View>
-        {list && (<FlatList data={list} style={styles.listItens} showsVerticalScrollIndicator={false}
-                renderItem={({ itens }) => (
-                  <Text style={styles.textItens}>{itens.NomeProduto}</Text>
-                )} /> )}
+            </View> */}
+
 
         </View>)
-    );
+
 };
 
 const styles = StyleSheet.create({

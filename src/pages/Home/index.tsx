@@ -5,117 +5,123 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
+  TouchableOpacity,
   Text,
   View,
   Modal,
   Pressable,
   Alert,
-  TextInput
+  TextInput,
 } from "react-native";
 
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage } from "react-native";
+
+
 import { Actions } from 'react-native-router-flux'
-import Icon from 'react-native-vector-icons/Ionicons';
-import { Produto } from "../../models/Produto.model";
+import { Product } from "../../models/Produto.model";
 import { Type } from "../../models/Type.model";
 
 const Home = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [list, setList] = useState<Type[]>([]);
   const [text, setText] = useState('');
   
-  const prd1: Produto[] = {
-    name: 'Milho',
-    Quantidade: 1,
-    unidade: ''
-  };
+  const prd1: Product[] = [];
+  const prd2: Product[] = [];
+  const prd3: Product[] = [];
+  const list: Type[] = [];
 
-  const prd2: Produto[] = {
-    name: "Pães",
-    Quantidade: 6,
-    unidade: ''
-  };
+  prd1.push({
+    Title: "Milho",
+    Quantity: 1,
+    Unity: ''
+  } as Product);
 
-  const prd3: Produto[] = {
-    name: 'Paracetamol',
-    Quantidade: 1,
-    unidade: 'cx'
-  };
+  prd2.push({
+    Title: 'Pães',
+    Quantity: 6,
+    Unity: ''
+  } as Product);
+
+  prd3.push({
+    Title: 'Paracetamol',
+    Quantity: 1,
+    Unity: 'cx'
+  } as Product);
 
   const shops1: Type = {
     id: 1,
     title: 'Mercado',
     periodicity: 'm',
     products: prd1
-  };
+  } as Type;
+
   const shops2: Type = {
     id: 2,
     title: 'Padaria',
     periodicity: 'semanal',
     products: prd2
-  };
+  } as Type;
 
   const shops3: Type = {
     id: 3,
     title: 'Farmácia',
     periodicity: 'semanal',
     products: prd3
-  };
+  } as Type;
+
+  list.push(shops1)
+  list.push(shops2)
+  list.push(shops3);
 
 
 
-
-  const goToList = (item: any) => {
+  const goToList = (item: Type) => {
     saveItem(item);
-
   }
 
-  // const saveItens = async () => {
+  const saveItem = async (ListEdit: Type) => {
+    let jsonText = JSON.stringify(ListEdit);
+    try {
+      await AsyncStorage.setItem('LIST_CURRENT', jsonText);
+      Actions.list();
+    } catch (e) {
+      Alert.alert("Erro ao salvar a lista");
+    }
+  }
+
+  
+  // const GetAllList = async () => {
   //   try {
-  //     await AsyncStorage.setItem('LIST', JSON.stringify(DATA))
+  //     const teste = await AsyncStorage.getItem('LIST');
   //   } catch (e) {
   //     Alert.alert(e)
   //   }
   // }
 
-  const saveItem = async (ListEdit: any) => {
-    try {
-      await AsyncStorage.setItem('LIST_CURRENT', JSON.stringify(ListEdit))
-      Actions.list();
-    } catch (e) {
-      Alert.alert(e)
-    }
-  }
-
-  
-  const GetAllList = async () => {
-    try {
-      const teste = await AsyncStorage.getItem('LIST');
-    } catch (e) {
-      Alert.alert(e)
-    }
-  }
-
   useEffect(() => {
-    setList([shops1, shops2, shops3])
+
   });
+  
   return (
-    <View style={styles.container}>
+    <View>
       {list && (
         <SafeAreaView>
           <FlatList
             data={list}
-            keyExtractor={list => list.id}
             renderItem={({ item }) => {
               return (
                 <View>
                   <Text>{item.title}</Text>
+                  <TouchableOpacity onPress = {() => goToList(item)}>
+                    <Text>lista</Text>
+                  </TouchableOpacity>
                 </View>
               );
             }}
           />
         </SafeAreaView>
-      )}
+      )} 
+
       <View style={styles.centeredView}>
         <Modal
           animationType="slide"
@@ -144,31 +150,13 @@ const Home = () => {
             </View>
           </View>
         </Modal>
-        {/* <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.textStyle}>Nova Lista</Text>
-        </Pressable> */}
       </View>
-
-      {/* <Button style={{ marginTop: 30 }} onPress={showModal}>
-                        Criar nova lista
-                    </Button> */}
-      {/* <Button style={{ marginTop: 30 }} onPress={GetItem}>
-                        pega a lista
-                    </Button> */}
-
-
     </View>
   )
 }
-
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
+
   },
   listItens: {
     display: "flex",
@@ -266,4 +254,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Home
+export default Home;
